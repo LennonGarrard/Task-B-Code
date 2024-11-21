@@ -21,12 +21,20 @@ The function will also update the inventory_records (For restocking) for a  give
     '''
     sales = 0
     restocked_items = 0
+    
     # Restocking logic
-    if current_day % 7 == 0:
-        restocked_items = 2000 - available_items
+    if current_day == 0:
+        restocked_items = 2000
+        available_items = 2000  
+        inventory_records.append((current_day, sales, restocked_items, available_items))
+    
+    elif current_day % 7 == 0 :
+        sales_last_6_days = sum(record[1] for record in inventory_records[-6:])  # Sums all sales of the last 6 days
+        restocked_items = sales_last_6_days
         
         available_items += restocked_items
     # Append to records
         inventory_records.append((current_day, sales, restocked_items, available_items))
-
+    
+        
     return available_items
